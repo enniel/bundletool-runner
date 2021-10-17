@@ -20,11 +20,17 @@ async function run() {
 
     await io.mkdirP(bundleToolPath);
 
+    core.info(`${bundleToolPath} directory created`);
+
     const downloadPath = await tc.downloadTool(BUNDLETOOL_URL);
 
     await io.mv(downloadPath, bundleToolFile);
 
+    core.info(`${bundleToolFile} moved to directory`);
+
     core.addPath(bundleToolPath);
+
+    core.info(`${bundleToolPath} added to path`);
 
     await exec.exec(`chmod +x ${bundleToolFile}`);
 
