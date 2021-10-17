@@ -1,5 +1,7 @@
 # GitHub Action - BundleTool Runner
 
+This runner install [Google BundleTool](https://developer.android.com/studio/command-line/bundletool)
+
 ## Usage
 
 ```
@@ -11,5 +13,5 @@ jobs:
         uses: actions/checkout@v2
 
       - name: install bundletool
-        uses: enniel/bundletool@v1
+        uses: enniel/bundletool-runner@v1
 ```
