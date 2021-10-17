@@ -1,0 +1,6 @@
+name: 'BundleTool Runner'
+description: 'Installs Google BundleTool'
+author: 'Evgenij Razumov (enniel)'
+runs:
+  using: 'node12'
+  main: 'lib/index.js'

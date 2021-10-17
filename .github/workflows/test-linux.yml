@@ -1,0 +1,13 @@
+name: "Test Linux"
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v1
+      
+      - name: install bundletool
+        uses: ./
