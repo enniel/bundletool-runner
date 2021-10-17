@@ -15,6 +15,25 @@ async function run() {
       );
     }
 
+    // custom working directory
+    const workingDirectoryInput = core.getInput("working-directory");
+    if (workingDirectoryInput) {
+      console.log(`custom working directory: ${workingDirectoryInput}`);
+    }
+    const workingDirectory = !workingDirectoryInput
+      ? undefined
+      : workingDirectoryInput;
+
+    // execute the custom script
+    try {
+      // move to custom working directory if set
+      if (workingDirectory) {
+        process.chdir(workingDirectory);
+      }
+    } catch (error: any) {
+      core.setFailed(error.message);
+    }
+
     const bundleToolPath = `${process.env.HOME}/bundletool`;
     const bundleToolFile = `${bundleToolPath}/bundletool.jar`;
 
