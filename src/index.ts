@@ -53,6 +53,8 @@ async function run() {
 
     await exec.exec(`chmod +x ${bundleToolFile}`);
 
+    core.exportVariable('BUNDLETOOL_FILE_PATH', bundleToolFile);
+
     await io.which("bundletool.jar", true);
   } catch (error: any) {
     core.setFailed(error.message);
