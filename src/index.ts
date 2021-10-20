@@ -50,7 +50,7 @@ async function run() {
 
     core.info(`${bundleToolPath} directory created`);
 
-    const bundletoolUrl = BUNDLETOOL_URL.replace(":version", version);
+    const bundletoolUrl = BUNDLETOOL_URL.replace(/:version/g, version);
 
     core.info(`bundletoolUrl: ${bundletoolUrl}`);
 
