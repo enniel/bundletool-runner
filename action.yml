@@ -1,6 +1,14 @@
 name: 'BundleTool Runner'
 description: 'Installs Google BundleTool'
 author: 'Evgenij Razumov (enniel)'
+inputs:
+  version:
+    description: 'bundletool version'
+    required: false
+    default: "1.8.1"
+  working-directory:
+    description: 'A custom working directory'
+    required: false
 runs:
   using: 'node12'
   main: 'lib/index.js'
