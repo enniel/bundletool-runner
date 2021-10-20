@@ -3,7 +3,7 @@ name: "Test Linux"
 on: [push, pull_request]
 
 jobs:
-  test:
+  without-options:
     runs-on: ubuntu-18.04
     steps:
       - name: checkout
@@ -11,3 +11,14 @@ jobs:
       
       - name: install bundletool
         uses: ./
+
+  custom-version:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v1
+      
+      - name: install bundletool
+        uses: ./
+        with:
+          version: 1.7.1

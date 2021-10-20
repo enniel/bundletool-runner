@@ -4,7 +4,9 @@ import * as tc from "@actions/tool-cache";
 import * as io from "@actions/io";
 
 const BUNDLETOOL_URL =
-  "https://github.com/google/bundletool/releases/download/1.8.1/bundletool-all-1.8.1.jar";
+  "https://github.com/google/bundletool/releases/download/:version/bundletool-all-:version.jar";
+
+const DEFAULT_VERSION = "1.8.1";
 
 async function run() {
   try {
@@ -24,6 +26,13 @@ async function run() {
       ? undefined
       : workingDirectoryInput;
 
+    // custom version
+    const versionInput = core.getInput("version");
+    if (versionInput) {
+      console.log(`custom version: ${versionInput}`);
+    }
+    const version = !versionInput ? DEFAULT_VERSION : versionInput;
+
     // execute the custom script
     try {
       // move to custom working directory if set
@@ -41,7 +50,8 @@ async function run() {
 
     core.info(`${bundleToolPath} directory created`);
 
-    const downloadPath = await tc.downloadTool(BUNDLETOOL_URL);
+    const bundletoolUrl = BUNDLETOOL_URL.replace(":version", version);
+    const downloadPath = await tc.downloadTool(bundletoolUrl);
 
     await io.mv(downloadPath, bundleToolFile);
 
@@ -53,7 +63,7 @@ async function run() {
 
     await exec.exec(`chmod +x ${bundleToolFile}`);
 
-    core.exportVariable('BUNDLETOOL_FILE_PATH', bundleToolFile);
+    core.exportVariable("BUNDLETOOL_FILE_PATH", bundleToolFile);
 
     await io.which("bundletool.jar", true);
   } catch (error: any) {

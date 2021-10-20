@@ -3,11 +3,22 @@ name: "Test MacOS"
 on: [push, pull_request]
 
 jobs:
-  test:
-    runs-on: macos-latest
+  without-options:
+    runs-on: ubuntu-18.04
     steps:
       - name: checkout
         uses: actions/checkout@v1
       
       - name: install bundletool
         uses: ./
+
+  custom-version:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v1
+      
+      - name: install bundletool
+        uses: ./
+        with:
+          version: 1.7.1
