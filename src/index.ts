@@ -51,6 +51,9 @@ async function run() {
     core.info(`${bundleToolPath} directory created`);
 
     const bundletoolUrl = BUNDLETOOL_URL.replace(":version", version);
+
+    core.info(`bundletoolUrl: ${bundletoolUrl}`);
+
     const downloadPath = await tc.downloadTool(bundletoolUrl);
 
     await io.mv(downloadPath, bundleToolFile);
