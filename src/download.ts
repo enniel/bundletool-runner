@@ -19,11 +19,9 @@ export const download = async (version: string): Promise<void> => {
 
   core.info(`bundletoolUrl: ${bundletoolUrl}`);
 
-  const downloadPath = await tc.downloadTool(bundletoolUrl);
+  const downloadPath = await tc.downloadTool(bundletoolUrl, bundleToolFile);
 
-  await io.mv(downloadPath, bundleToolFile);
-
-  core.info(`${bundleToolFile} moved to directory`);
+  core.info(`downloaded to ${downloadPath}`);
 
   core.addPath(bundleToolPath);
 
