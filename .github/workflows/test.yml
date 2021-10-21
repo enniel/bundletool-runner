@@ -52,8 +52,11 @@ jobs:
       - name: list android devices
         run: "$ANDROID_SDK_ROOT/tools/bin/avdmanager list"
 
+      - name: download image
+        run: "$ANDROID_SDK_ROOT/tools/bin/sdkmanager --install 'system-images;android-29;default;x86'"
+
       - name: create avd
-        run: "$ANDROID_SDK_ROOT/tools/bin/avdmanager create avd -n test -k 'system-images;android-29;google_apis;x86'"
+        run: "$ANDROID_SDK_ROOT/tools/bin/avdmanager create avd -n test -k 'system-images;android-29;default;x86'"
 
       - name: build apks
         uses: ./
