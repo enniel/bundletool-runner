@@ -57,28 +57,45 @@ jobs:
           ks-key-alias: "androiddebugkey"
           overwrite: true
 
-      - name: setup android sdk
+      - name: android command line tools cache
+        uses: actions/cache@v2
+        id: cmdline-tools-cache
+        with:
+          path: ~/.android/skd/cmdline-tools
+          key: ${{ matrix.os }}-cmdline-tools
+
+      - name: avd cache
+        uses: actions/cache@v2
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: ${{ matrix.os }}-avd
+
+      - name: android system images cache
+        uses: actions/cache@v2
+        id: system-images-cache
+        with:
+          path: ~/.android/sdk/system-images/android-22
+          key: ${{ matrix.os }}-system-images-android-22
+
+      - name: setup command line tools
+        if: steps.cmdline-tools-cache.outputs.cache-hit != 'true'
         uses: android-actions/setup-android@v2
 
       - name: download image
+        if: steps.system-images-cache.outputs.cache-hit != 'true'
         run: "$ANDROID_SDK_ROOT/tools/bin/sdkmanager --install 'system-images;android-22;default;x86_64'"
 
       - name: create avd
+        if: steps.avd-cache.outputs.cache-hit != 'true'
         run: "echo 'no' | $ANDROID_SDK_ROOT/tools/bin/avdmanager create avd -n test -k 'system-images;android-22;default;x86_64'"
 
       - name: start emulator
-        if: matrix.os == 'macos-latest'
-        run: $ANDROID_SDK_ROOT/emulator/emulator -avd test -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back off &>/dev/null &
-
-      - name: start emulator
-        if: matrix.os == 'ubuntu-latest'
-        run: $ANDROID_SDK_ROOT/emulator/emulator -avd test -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel off &>/dev/null &
-
-      - name: wait emulator
-        run: $ANDROID_SDK_ROOT/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
-
-      - name: adb devices
-        run: "$ANDROID_SDK_ROOT/platform-tools/adb devices"
+        run: |
+          $ANDROID_SDK_ROOT/emulator/emulator -avd test -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel off &>/dev/null & \
+          $ANDROID_SDK_ROOT/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
 
       - name: install apks
         uses: ./
