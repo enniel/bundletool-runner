@@ -33,6 +33,9 @@ jobs:
 
   build-apks:
     runs-on: ${{ matrix.os }}
+    env:
+      ANDROID_HOME_DIR: ~/.android
+      ANDROID_SDK_ROOT: ~/.android/sdk
     strategy:
       fail-fast: false
       matrix:
@@ -61,7 +64,7 @@ jobs:
         uses: actions/cache@v2
         id: cmdline-tools-cache
         with:
-          path: ~/.android/skd/cmdline-tools
+          path: ${{ env.ANDROID_SDK_ROOT }}/cmdline-tools
           key: ${{ matrix.os }}-cmdline-tools
 
       - name: avd cache
@@ -69,15 +72,15 @@ jobs:
         id: avd-cache
         with:
           path: |
-            ~/.android/avd/*
-            ~/.android/adb*
+            ${{ env.ANDROID_HOME_DIR }}/avd/*
+            ${{ env.ANDROID_HOME_DIR }}/adb*
           key: ${{ matrix.os }}-avd
 
       - name: android system images cache
         uses: actions/cache@v2
         id: system-images-cache
         with:
-          path: ~/.android/sdk/system-images/android-22
+          path: ${{ env.ANDROID_SDK_ROOT }}/system-images/android-22
           key: ${{ matrix.os }}-system-images-android-22
 
       - name: setup command line tools
