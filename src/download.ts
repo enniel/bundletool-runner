@@ -20,16 +20,17 @@ export const download = async (version: string): Promise<void> => {
 
   core.info(`bundletoolUrl: ${bundletoolUrl}`);
 
-  const downloadPath = await tc.downloadTool(bundletoolUrl, bundleToolFile);
-
-  // check file exists
-  if (fs.existsSync(downloadPath)) {
-    core.info(`${downloadPath} exists`);
+  if (fs.existsSync(bundletoolUrl)) {
+    core.info(`${bundletoolUrl} exists`);
   } else {
-    throw new Error(`Missing file at path: ${downloadPath}`);
+    const downloadPath = await tc.downloadTool(bundletoolUrl, bundleToolFile);
+    // check file exists
+    if (fs.existsSync(downloadPath)) {
+      core.info(`${downloadPath} downloaded`);
+    } else {
+      throw new Error(`Missing file at path: ${downloadPath}`);
+    }
   }
-
-  core.info(`downloaded to ${downloadPath}`);
 
   core.addPath(bundleToolPath);
 
