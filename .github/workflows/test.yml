@@ -1,10 +1,14 @@
-name: "Test MacOS"
+name: "Test"
 
 on: [push, pull_request]
 
 jobs:
   without-options:
-    runs-on: macos-11
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-11, ubuntu-18.04]
     steps:
       - name: checkout
         uses: actions/checkout@v1
@@ -13,7 +17,11 @@ jobs:
         uses: ./
 
   custom-version:
-    runs-on: macos-11
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-11, ubuntu-18.04]
     steps:
       - name: checkout
         uses: actions/checkout@v1
@@ -24,7 +32,11 @@ jobs:
           version: "1.7.1"
 
   build-apks:
-    runs-on: macos-11
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-11, ubuntu-18.04]
     steps:
       - name: checkout
         uses: actions/checkout@v1
@@ -46,7 +58,7 @@ jobs:
           ks-key-alias: "androiddebugkey"
           overwrite: true
 
-      - name: "check file existence"
+      - name: check file existence
         uses: andstor/file-existence-action@v1
         with:
           files: "./test-app/app-release.apks"
