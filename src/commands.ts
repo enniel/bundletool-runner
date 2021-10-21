@@ -68,7 +68,7 @@ interface InstallApksCommandOptions {
 }
 
 const installApksCommand = (options: InstallApksCommandOptions) => {
-  const commandLine = `java -jar ${process.env.BUNDLETOOL_FILE_PATH} build-apks`;
+  const commandLine = `java -jar ${process.env.BUNDLETOOL_FILE_PATH} install-apks`;
   if (!options.apks) {
     throw new Error("Option `apks` is required");
   }
