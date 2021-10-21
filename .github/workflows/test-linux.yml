@@ -22,3 +22,26 @@ jobs:
         uses: ./
         with:
           version: "1.7.1"
+
+  build-apks:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v1
+
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
+      - name: build apks
+        uses: ./
+        with:
+          command: "build-apks"
+          bundle: "./test-app/app-release.aab"
+          output: "./test-app/app-release.apks"
+          ks: "./test-app/release.keystore"
+          ksPass: "pass:android"
+          ksKeyAlias: "androiddebugkey"
+          overwrite: true

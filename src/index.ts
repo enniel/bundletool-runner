@@ -1,12 +1,7 @@
 import * as core from "@actions/core";
-import * as exec from "@actions/exec";
-import * as tc from "@actions/tool-cache";
-import * as io from "@actions/io";
-
-const BUNDLETOOL_URL =
-  "https://github.com/google/bundletool/releases/download/:version/bundletool-all-:version.jar";
-
-const DEFAULT_VERSION = "1.8.1";
+import { parseInputs } from "./inputs";
+import { runCommand } from "./commands";
+import { download } from "./download";
 
 async function run() {
   try {
@@ -17,60 +12,51 @@ async function run() {
       );
     }
 
-    // custom working directory
-    const workingDirectoryInput = core.getInput("working-directory");
-    if (workingDirectoryInput) {
-      console.log(`custom working directory: ${workingDirectoryInput}`);
-    }
-    const workingDirectory = !workingDirectoryInput
-      ? undefined
-      : workingDirectoryInput;
+    const {
+      workingDirectory,
+      version,
+      command,
+      bundle,
+      output,
+      overwrite,
+      aapt2,
+      ks,
+      ksPass,
+      ksKeyAlias,
+      connectedDevice,
+      deviceId,
+      deviceSpec,
+      mode,
+      localTesting,
+    } = parseInputs();
 
-    // custom version
-    const versionInput = core.getInput("version");
-    if (versionInput) {
-      console.log(`custom version: ${versionInput}`);
+    // move to custom working directory if set
+    if (workingDirectory) {
+      process.chdir(workingDirectory);
     }
-    const version = !versionInput ? DEFAULT_VERSION : versionInput;
 
-    // execute the custom script
-    try {
-      // move to custom working directory if set
-      if (workingDirectory) {
-        process.chdir(workingDirectory);
-      }
-    } catch (error: any) {
+    await download(version);
+
+    if (command) {
+      await runCommand(command, {
+        bundle,
+        output,
+        overwrite,
+        aapt2,
+        ks,
+        ksPass,
+        ksKeyAlias,
+        connectedDevice,
+        deviceId,
+        deviceSpec,
+        mode,
+        localTesting,
+      });
+    }
+  } catch (error) {
+    if (error instanceof Error) {
       core.setFailed(error.message);
     }
-
-    const bundleToolPath = `${process.env.HOME}/bundletool`;
-    const bundleToolFile = `${bundleToolPath}/bundletool.jar`;
-
-    await io.mkdirP(bundleToolPath);
-
-    core.info(`${bundleToolPath} directory created`);
-
-    const bundletoolUrl = BUNDLETOOL_URL.replace(/:version/g, version);
-
-    core.info(`bundletoolUrl: ${bundletoolUrl}`);
-
-    const downloadPath = await tc.downloadTool(bundletoolUrl);
-
-    await io.mv(downloadPath, bundleToolFile);
-
-    core.info(`${bundleToolFile} moved to directory`);
-
-    core.addPath(bundleToolPath);
-
-    core.info(`${bundleToolPath} added to path`);
-
-    await exec.exec(`chmod +x ${bundleToolFile}`);
-
-    core.exportVariable("BUNDLETOOL_FILE_PATH", bundleToolFile);
-
-    await io.which("bundletool.jar", true);
-  } catch (error: any) {
-    core.setFailed(error.message);
   }
 }
 
