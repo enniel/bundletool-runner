@@ -32,7 +32,4 @@ export const download = async (version: string): Promise<void> => {
 
   // export variable for reuse in other actions
   core.exportVariable("BUNDLETOOL_FILE_PATH", bundleToolFile);
-
-  // check bundletool.jar script
-  await io.which("bundletool.jar", true);
 };
