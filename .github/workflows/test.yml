@@ -59,7 +59,7 @@ jobs:
         run: "echo 'no' | $ANDROID_SDK_ROOT/tools/bin/avdmanager create avd -n test -k 'system-images;android-29;default;x86_64'"
 
       - name: start emulator
-        run: "$ANDROID_SDK_ROOT/emulator/emulator -avd test"
+        run: "$ANDROID_SDK_ROOT/emulator/emulator -avd test -no-window -noaudio -no-boot-anim -camera-back none &>/dev/null &"
 
       - name: build apks
         uses: ./
