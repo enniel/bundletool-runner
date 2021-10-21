@@ -58,6 +58,9 @@ jobs:
       - name: create avd
         run: "echo 'no' | $ANDROID_SDK_ROOT/tools/bin/avdmanager create avd -n test -k 'system-images;android-29;default;x86'"
 
+      - name: start emulator
+        run: "$ANDROID_SDK_ROOT/tools/emulator -avd test"
+
       - name: build apks
         uses: ./
         with:
