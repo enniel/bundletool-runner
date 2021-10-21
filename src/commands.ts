@@ -73,7 +73,7 @@ const installApksCommand = (options: InstallApksCommandOptions) => {
     throw new Error("Option `apks` is required");
   }
 
-  const args = [`--bundle=${options.apks}`];
+  const args = [`--apks=${options.apks}`];
 
   if (options.deviceId) {
     args.push(`--device-id=${options.deviceId}`);
