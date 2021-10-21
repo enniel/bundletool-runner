@@ -26,7 +26,7 @@ const buildApksCommand = (options: Options) => {
 
   const args = [`--bundle=${options.bundle}`, `--output=${options.output}`];
 
-  if (options.overwrite) {
+  if (options.overwrite === "true") {
     args.push("--overwrite");
   }
   if (options.aapt2) {
@@ -41,7 +41,7 @@ const buildApksCommand = (options: Options) => {
   if (options.ksKeyAlias) {
     args.push(`--ks-key-alias=${options.ksKeyAlias}`);
   }
-  if (options.connectedDevice) {
+  if (options.connectedDevice === "true") {
     args.push(`--connected-device`);
   }
   if (options.deviceId) {
@@ -53,7 +53,7 @@ const buildApksCommand = (options: Options) => {
   if (options.mode) {
     args.push(`--mode=${options.mode}`);
   }
-  if (options.localTesting) {
+  if (options.localTesting === "true") {
     args.push(`--local-testing=${options.localTesting}`);
   }
 

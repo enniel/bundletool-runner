@@ -29,11 +29,11 @@ jobs:
       - name: checkout
         uses: actions/checkout@v1
 
-      - name: specify emulator
-        uses: reactivecircus/android-emulator-runner@v2
+      - name: setup java
+        uses: actions/setup-java@v2
         with:
-          api-level: 29
-          script: echo "specify emulator"
+          distribution: 'zulu'
+          java-version: '11'
 
       - name: build apks
         uses: ./
