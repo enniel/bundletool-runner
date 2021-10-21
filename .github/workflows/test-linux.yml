@@ -42,6 +42,6 @@ jobs:
           bundle: "./test-app/app-release.aab"
           output: "./test-app/app-release.apks"
           ks: "./test-app/release.keystore"
-          ksPass: "pass:android"
-          ksKeyAlias: "androiddebugkey"
+          ks-pass: "pass:android"
+          ks-key-alias: "androiddebugkey"
           overwrite: true
