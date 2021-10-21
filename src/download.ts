@@ -20,8 +20,8 @@ export const download = async (version: string): Promise<void> => {
 
   core.info(`bundletoolUrl: ${bundletoolUrl}`);
 
-  if (fs.existsSync(bundletoolUrl)) {
-    core.info(`${bundletoolUrl} exists`);
+  if (fs.existsSync(bundleToolFile)) {
+    core.info(`${bundleToolFile} exists`);
   } else {
     const downloadPath = await tc.downloadTool(bundletoolUrl, bundleToolFile);
     // check file exists
