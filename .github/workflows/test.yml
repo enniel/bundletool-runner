@@ -51,7 +51,7 @@ jobs:
         uses: android-actions/setup-android@v2
 
       - name: list android devices
-        run: emulator -list-avds
+        run: "$ANDROID_SDK_ROOT/tools/emulator -list-avds"
 
       - name: build apks
         uses: ./
