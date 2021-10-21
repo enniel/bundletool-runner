@@ -65,7 +65,7 @@ jobs:
         id: cmdline-tools-cache
         with:
           path: ${{ env.ANDROID_SDK_ROOT }}/cmdline-tools
-          key: ${{ matrix.os }}-cmdline-tools
+          key: ${{ matrix.os }}-cmdline-tools-cache-v1
 
       - name: avd cache
         uses: actions/cache@v2
@@ -74,14 +74,14 @@ jobs:
           path: |
             ${{ env.ANDROID_HOME_DIR }}/avd/*
             ${{ env.ANDROID_HOME_DIR }}/adb*
-          key: ${{ matrix.os }}-avd
+          key: ${{ matrix.os }}-avd-cache-v1
 
       - name: android system images cache
         uses: actions/cache@v2
         id: system-images-cache
         with:
           path: ${{ env.ANDROID_SDK_ROOT }}/system-images/android-22
-          key: ${{ matrix.os }}-system-images-android-22
+          key: ${{ matrix.os }}-system-images-android-22-cache-v1
 
       - name: setup command line tools
         if: steps.cmdline-tools-cache.outputs.cache-hit != 'true'
