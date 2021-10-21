@@ -5,13 +5,6 @@ import { download } from "./download";
 
 async function run() {
   try {
-    // only support running on macOS or Linux
-    if (process.platform !== "darwin" && process.platform !== "linux") {
-      throw new Error(
-        "Unsupported virtual machine: please use either macos or ubuntu VM."
-      );
-    }
-
     const {
       workingDirectory,
       version,
