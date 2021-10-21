@@ -1,4 +1,5 @@
 import os from "os";
+import fs from "fs";
 import path from "path";
 import * as core from "@actions/core";
 import * as exec from "@actions/exec";
@@ -20,6 +21,11 @@ export const download = async (version: string): Promise<void> => {
   core.info(`bundletoolUrl: ${bundletoolUrl}`);
 
   const downloadPath = await tc.downloadTool(bundletoolUrl, bundleToolFile);
+
+  // check file exists
+  if (!fs.existsSync(downloadPath)) {
+    throw new Error(`Missing file at path: ${downloadPath}`);
+  }
 
   core.info(`downloaded to ${downloadPath}`);
 

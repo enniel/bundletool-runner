@@ -1,3 +1,4 @@
+import fs from "fs";
 import { exec } from "@actions/exec";
 
 interface Options {
@@ -60,13 +61,20 @@ const buildApksCommand = (options: Options) => {
   return { commandLine, args };
 };
 
-export const runCommand = (
+export const runCommand = async (
   command: string,
   options: Options
-): Promise<number> => {
+): Promise<void> => {
   if (command === "build-apks") {
     const { commandLine, args } = buildApksCommand(options);
-    return exec(commandLine, args);
+    await exec(commandLine, args);
+
+    // check .apks file exists
+    if (!fs.existsSync(options.output)) {
+      throw new Error(`Missing file at path: ${options.output}`);
+    }
+
+    return;
   }
   throw new Error("Command not supported!");
 };
