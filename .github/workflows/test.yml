@@ -67,9 +67,15 @@ jobs:
         run: "echo 'no' | $ANDROID_SDK_ROOT/tools/bin/avdmanager create avd -n test -k 'system-images;android-22;default;x86_64'"
 
       - name: start emulator
-        run: |
-          $ANDROID_SDK_ROOT/emulator/emulator -avd test -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel off &>/dev/null & \
-          $ANDROID_SDK_ROOT/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
+        if: matrix.os == 'macos-latest'
+        run: $ANDROID_SDK_ROOT/emulator/emulator -avd test -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back off &>/dev/null &
+
+      - name: start emulator
+        if: matrix.os == 'ubuntu-latest'
+        run: $ANDROID_SDK_ROOT/emulator/emulator -avd test -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -accel off &>/dev/null &
+
+      - name: wait emulator
+        run: $ANDROID_SDK_ROOT/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
 
       - name: adb devices
         run: "$ANDROID_SDK_ROOT/platform-tools/adb devices"
