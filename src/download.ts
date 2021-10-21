@@ -7,8 +7,8 @@ import * as io from "@actions/io";
 import { BUNDLETOOL_URL } from "./constants";
 
 export const download = async (version: string): Promise<void> => {
-  const bundleToolPath = path.join(os.homedir(), "/bundletool");
-  const bundleToolFile = path.join(bundleToolPath, "/bundletool.jar");
+  const bundleToolPath = path.join(os.homedir(), "bundletool");
+  const bundleToolFile = path.join(bundleToolPath, "bundletool.jar");
 
   // create folder if not exists
   await io.mkdirP(bundleToolPath);
