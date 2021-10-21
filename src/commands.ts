@@ -24,7 +24,7 @@ const buildApksCommand = (options: Options) => {
     throw new Error("Option `output` is required");
   }
 
-  const args = [`--bundle ${options.bundle}`, `--output ${options.output}`];
+  const args = [`--bundle=${options.bundle}`, `--output=${options.output}`];
 
   if (options.overwrite) {
     args.push("--overwrite");
