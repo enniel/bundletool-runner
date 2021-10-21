@@ -46,21 +46,6 @@ jobs:
         with:
           java-version: '1.8'
 
-      - name: setup android sdk
-        uses: android-actions/setup-android@v2
-
-      - name: list android devices
-        run: "$ANDROID_SDK_ROOT/tools/bin/avdmanager list"
-
-      - name: download image
-        run: "$ANDROID_SDK_ROOT/tools/bin/sdkmanager --install 'system-images;android-29;default;x86_64'"
-
-      - name: create avd
-        run: "echo 'no' | $ANDROID_SDK_ROOT/tools/bin/avdmanager create avd -n test -k 'system-images;android-29;default;x86_64'"
-
-      - name: start emulator
-        run: "$ANDROID_SDK_ROOT/emulator/emulator -avd test -no-window -noaudio -no-boot-anim -camera-back none &>/dev/null &"
-
       - name: build apks
         uses: ./
         with:
@@ -71,6 +56,23 @@ jobs:
           ks-pass: "pass:android"
           ks-key-alias: "androiddebugkey"
           overwrite: true
+
+      - name: setup android sdk
+        uses: android-actions/setup-android@v2
+
+      - name: download image
+        run: "$ANDROID_SDK_ROOT/tools/bin/sdkmanager --install 'system-images;android-29;default;x86_64'"
+
+      - name: create avd
+        run: "echo 'no' | $ANDROID_SDK_ROOT/tools/bin/avdmanager create avd -n test -k 'system-images;android-29;default;x86_64'"
+
+      - name: start emulator
+        run: |
+          $ANDROID_SDK_ROOT/emulator/emulator -avd test -no-window -noaudio -no-boot-anim -camera-back none &>/dev/null & \
+          adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
+
+      - name: adb devices
+        run: "$ANDROID_SDK_ROOT/platform-tools/adb devices"
 
       - name: install apks
         uses: ./
