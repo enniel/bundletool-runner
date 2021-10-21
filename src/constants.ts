@@ -61,6 +61,10 @@ export const INPUTS = {
     key: "local-testing",
     value: "",
   },
+  apks: {
+    key: "apks",
+    value: "",
+  },
 };
 
 export const BUNDLETOOL_URL =

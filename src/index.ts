@@ -21,6 +21,7 @@ async function run() {
       deviceSpec,
       mode,
       localTesting,
+      apks,
     } = parseInputs();
 
     // move to custom working directory if set
@@ -44,6 +45,7 @@ async function run() {
         deviceSpec,
         mode,
         localTesting,
+        apks,
       });
     }
   } catch (error) {

@@ -2,7 +2,7 @@ import fs from "fs";
 import * as core from "@actions/core";
 import { exec } from "@actions/exec";
 
-interface Options {
+interface BuildApksCommandOptions {
   bundle: string;
   output: string;
   overwrite: string;
@@ -17,7 +17,7 @@ interface Options {
   localTesting: string;
 }
 
-const buildApksCommand = (options: Options) => {
+const buildApksCommand = (options: BuildApksCommandOptions) => {
   const commandLine = `java -jar ${process.env.BUNDLETOOL_FILE_PATH} build-apks`;
   if (!options.bundle) {
     throw new Error("Option `bundle` is required");
@@ -62,6 +62,28 @@ const buildApksCommand = (options: Options) => {
   return { commandLine, args };
 };
 
+interface InstallApksCommandOptions {
+  apks: string;
+  deviceId: string;
+}
+
+const installApksCommand = (options: InstallApksCommandOptions) => {
+  const commandLine = `java -jar ${process.env.BUNDLETOOL_FILE_PATH} build-apks`;
+  if (!options.apks) {
+    throw new Error("Option `apks` is required");
+  }
+
+  const args = [`--bundle=${options.apks}`];
+
+  if (options.deviceId) {
+    args.push(`--device-id=${options.deviceId}`);
+  }
+
+  return { commandLine, args };
+};
+
+type Options = BuildApksCommandOptions & InstallApksCommandOptions;
+
 export const runCommand = async (
   command: string,
   options: Options
@@ -76,6 +98,12 @@ export const runCommand = async (
     } else {
       throw new Error(`Missing file at path: ${options.output}`);
     }
+
+    return;
+  }
+  if (command === "install-apks") {
+    const { commandLine, args } = installApksCommand(options);
+    await exec(commandLine, args);
 
     return;
   }

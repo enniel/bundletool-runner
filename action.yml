@@ -48,6 +48,9 @@ inputs:
   local-testing:
     description: "Use this flag to enable your app bundle for local testing. Local testing allows for quick, iterative testing cycles without the need to upload to Google Play servers."
     required: false
+  apks:
+    description: "Specifies the path to the APK"
+    required: false
 runs:
   using: 'node12'
   main: 'lib/index.js'

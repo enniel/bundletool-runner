@@ -71,3 +71,9 @@ jobs:
           ks-pass: "pass:android"
           ks-key-alias: "androiddebugkey"
           overwrite: true
+
+      - name: install apks
+        uses: ./
+        with:
+          command: "install-apks"
+          apks: "./test-app/app-release.apks"
