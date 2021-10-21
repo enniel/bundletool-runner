@@ -47,6 +47,12 @@ jobs:
           distribution: 'zulu'
           java-version: '11'
 
+      - name: setup android sdk
+        uses: android-actions/setup-android@v2
+
+      - name: list android devices
+        run: emulator -list-avds
+
       - name: build apks
         uses: ./
         with:
