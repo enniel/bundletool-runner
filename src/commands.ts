@@ -1,4 +1,5 @@
 import fs from "fs";
+import * as core from "@actions/core";
 import { exec } from "@actions/exec";
 
 interface Options {
@@ -70,7 +71,9 @@ export const runCommand = async (
     await exec(commandLine, args);
 
     // check .apks file exists
-    if (!fs.existsSync(options.output)) {
+    if (fs.existsSync(options.output)) {
+      core.info(`${options.output} exists`);
+    } else {
       throw new Error(`Missing file at path: ${options.output}`);
     }
 

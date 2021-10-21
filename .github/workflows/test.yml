@@ -57,9 +57,3 @@ jobs:
           ks-pass: "pass:android"
           ks-key-alias: "androiddebugkey"
           overwrite: true
-
-      - name: check file existence
-        uses: andstor/file-existence-action@v1
-        with:
-          files: "./test-app/app-release.apks"
-          allow_failure: true
