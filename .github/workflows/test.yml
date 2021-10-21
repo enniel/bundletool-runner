@@ -56,7 +56,7 @@ jobs:
         run: "$ANDROID_SDK_ROOT/tools/bin/sdkmanager --install 'system-images;android-29;default;x86'"
 
       - name: create avd
-        run: "$ANDROID_SDK_ROOT/tools/bin/avdmanager create avd -n test -k 'system-images;android-29;default;x86'"
+        run: "echo 'no' | $ANDROID_SDK_ROOT/tools/bin/avdmanager create avd -n test -k 'system-images;android-29;default;x86'"
 
       - name: build apks
         uses: ./
