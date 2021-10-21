@@ -61,15 +61,16 @@ jobs:
         uses: android-actions/setup-android@v2
 
       - name: download image
-        run: "$ANDROID_SDK_ROOT/tools/bin/sdkmanager --install 'system-images;android-29;default;x86_64'"
+        run: "$ANDROID_SDK_ROOT/tools/bin/sdkmanager --install 'system-images;android-25;default;x86_64'"
 
       - name: create avd
-        run: "echo 'no' | $ANDROID_SDK_ROOT/tools/bin/avdmanager create avd -n test -k 'system-images;android-29;default;x86_64'"
+        run: "echo 'no' | $ANDROID_SDK_ROOT/tools/bin/avdmanager create avd -n test -k 'system-images;android-25;default;x86_64'"
 
       - name: start emulator
         run: |
+          $ANDROID_SDK_ROOT/platform-tools/adb start-server \
           $ANDROID_SDK_ROOT/emulator/emulator -avd test -no-window -noaudio -no-boot-anim -camera-back none &>/dev/null & \
-          adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
+          $ANDROID_SDK_ROOT/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
 
       - name: adb devices
         run: "$ANDROID_SDK_ROOT/platform-tools/adb devices"
